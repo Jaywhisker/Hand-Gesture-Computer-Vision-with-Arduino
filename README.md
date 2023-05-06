@@ -185,7 +185,7 @@ Output:
 
 <div float="left" align="center">
   <img src = "https://user-images.githubusercontent.com/51687528/236615631-791ea5d7-469b-4e00-84b3-359edc282f64.png" width= 30%>
-  <img src = "https://user-images.githubusercontent.com/51687528/236615637-31fe3fb3-103b-4bb6-b70f-81080f75b74b.png" width = 50%>
+  <img src = "https://user-images.githubusercontent.com/51687528/236615637-31fe3fb3-103b-4bb6-b70f-81080f75b74b.png" width = 56.4%>
 </div>
 
 -----
