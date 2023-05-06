@@ -30,7 +30,7 @@ def rotation(img, angle, iter, path):
       i+= 1
 
       
-def random_rotation(class_list = ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp'], directory, angle, iter):
+def random_rotation(class_list = ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp'], directory, angle = 45, iter =3):
 
   #doing data augmentation on every class
   for i in range(0,len(class_list)):
