@@ -5,6 +5,10 @@ import time
 import os
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+#This code file contains the function for
+Creating Dataset:
+collect_dataset(directory)
+
 #The algorithm:
 
 MASKING
