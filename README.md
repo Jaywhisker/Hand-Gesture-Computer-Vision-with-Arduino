@@ -68,7 +68,7 @@ As we only want to recognise hand gestures, we do not want other dependencies su
 </p>
 
 ### Function
-`collect_dataset`: Function that takes in the filepath to the folder that will save the dataset. Each folder should only contain ONE hand gesture. 
+`collect_dataset(directory)`: Function that takes in the directory to the folder that will save the dataset. Each folder should only contain ONE hand gesture. 
 
 Example of output:
 <div align = "center">
