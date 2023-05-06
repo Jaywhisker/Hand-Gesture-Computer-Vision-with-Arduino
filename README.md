@@ -32,6 +32,7 @@ pip install opencv-python
 pip install tensorflow
 pip install keras
 pip install matplotlib
+pip install firebase-admin
 ```
 -----
 ### Collecting the Dataset
