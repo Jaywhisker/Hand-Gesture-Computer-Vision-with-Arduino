@@ -5,7 +5,7 @@ Accessing Firebase:
 Firebase_setup(secretspath, url)
 
 Testing the model:
-Hand_gesture_recognition()
+Hand_gesture_recognition(secretspath, url, class_names, modelpath):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 #importing dependencies
@@ -39,7 +39,7 @@ from tensorflow import keras
 #Function to run the model on webcam and update the firebase accordingly
 #Requires: secretspath, database url, classnames, filepath to model
 #Function breaks when 'q' key is pressed
-def Hand_gesture_recognition(secretspath, url, classnames = ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp'], modelpath):
+def Hand_gesture_recognition(secretspath, url, class_names = ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp'], modelpath):
   Firebase_setup(secretspath, url)
   
   #start streaming video from webcam 
@@ -56,9 +56,6 @@ def Hand_gesture_recognition(secretspath, url, classnames = ['01_Highfive', '02_
 
   #loading the Computer Vision model
   reconstructed_model = keras.models.load_model(modelpath) #path to model
-
-  #the 5 different predictions outputs the model is trained on
-  class_names = classnames
 
   #while the webcam is running
   while True:
