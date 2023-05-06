@@ -70,6 +70,13 @@ As we only want to recognise hand gestures, we do not want other dependencies su
 ### Function
 `collect_dataset(directory)`: Function that takes in the directory to the folder that will save the dataset. Each folder should only contain ONE hand gesture. 
 
+```
+# How to use code
+from Collect_dataset import *
+
+collect_dataset(directory)
+```
+
 Example of output:
 <div align = "center">
   <img src="https://user-images.githubusercontent.com/51687528/236613141-40a4fda0-af6a-4414-bb4d-4e64573c8ff7.png" width = 70%>
@@ -112,7 +119,7 @@ Output:
 <p align="center">
   <em>Examples of data augmentation</em>
 </p>
-
+-----
 ## Training the model
 Once we have our final dataset, it is time to train the model. We will be using a pre-trained VGG16 architecture as it is a model that has consistently performed well.
 
@@ -122,7 +129,7 @@ Once we have our final dataset, it is time to train the model. We will be using 
 `visualise_dataset(train_ds)`: Function that takes in the training dataset and shows the first 9 images of the first batch, help visualises data
 
 `train_model(train_ds, val_ds, model, batch_size, epochs, filepath)`: Function that takes in the training and validation dataset, the model that will train on this data and the specifics of the model training. Default batch_size and epochs is 32 and 15 respectively. The model will be trained on the dataset and best model (based on lowest loss) will be saved to the filepath.
-
+-----
 ## Running the model and linking to Firebase
 
 ### Function
@@ -135,7 +142,7 @@ Output:
   <img src = "https://user-images.githubusercontent.com/51687528/236615637-31fe3fb3-103b-4bb6-b70f-81080f75b74b.png" width = 50%>
 </div>
 
-
+-----
 ## Arduino
 Create your Arudino Circuit based on the circuit diagram below and run the arduino code. 
 
