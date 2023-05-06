@@ -72,7 +72,7 @@ As we only want to recognise hand gestures, we do not want other dependencies su
 
 ```
 # How to use code
-from Collect_dataset import *
+from Creating_Dataset import *
 
 collect_dataset(directory)
 ```
