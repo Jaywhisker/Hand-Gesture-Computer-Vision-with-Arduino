@@ -7,7 +7,7 @@ creating_model(class_names)
 Training Model:
 preparing_dataset(filepath, train_val_split, seed)
 visualise_dataset(train_ds)
-train_model(class_names, train_ds, val_ds, batch_size, epochs, filepath)
+train_model(class_names, train_ds, val_ds, batch_size, epochs, modelpath)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 #Importing dependencies 
@@ -108,7 +108,7 @@ def creating_model(class_names):
 
 #Function to train the model
 #Requires class_names to create the model, followed by the dataset and the batch size and epochs. Lastly requires a filepath to save the best model.
-def train_model(class_names, train_ds, val_ds, batch_size=32, epochs=15, filepath):
+def train_model(class_names, train_ds, val_ds, batch_size=32, epochs=15, modelpath):
   #creating model
   model = creating_model(class_names)
   
@@ -119,4 +119,4 @@ def train_model(class_names, train_ds, val_ds, batch_size=32, epochs=15, filepat
   model.fit(train_ds,validation_data = val_ds, batch_size=batch_size, callbacks=[checkpoint], epochs=epochs)
   
   #save the best model
-  model.save(filepath)
+  model.save(modelpath)
