@@ -4,7 +4,7 @@ This project contains the code to create a simple hand gesture computer vision m
 
 Link to in-depth step by step guide: https://www.notion.so/Smart-Home-With-Arduino-and-Computer-Vision-628f8458261f4b9cb6ba959f22b34212
 
-Note: The blog uses Google Colab. There will 2 version of code in this GitHub, one that corresponds to the Google Colab code (tweaked to allow access to webcam) as well as a version that allows you to run the code locally if you have a GPU.
+Note: The blog uses the code that accomodates for running on Google Colab. There will 2 version of code in this GitHub, one that corresponds to the Google Colab code (tweaked to allow access to webcam) as well as a version that allows you to run the code locally if you have a GPU.
 
 ## Overview of Project
 
@@ -75,6 +75,7 @@ As we only want to recognise hand gestures, we do not want other dependencies su
 # How to use code
 from Creating_Dataset import *
 
+directory = "./Dataset/01_Highfive"
 collect_dataset(directory)
 ```
 
@@ -107,7 +108,19 @@ This will be your dataset for training your model. It is advised to look through
 Data augmentation is important as it increases our model accuracy while also increasing our dataset size. I have chosen random rotation of -90° to 90° for our data augmentation as it covers the range where the hand direction could be in.
 
 ### Function
-`random_rotation(image_list, angle, iter, path)`: Function that takes in the list of images, the angle that the image can rotate max, the number of data augmentation per image and the file path to save the augmented data.
+`random_rotation(class_list, directory,angle, iter)`: Function that takes in the list of class names, the directory that holds the folder of datasets, the angle that the image can rotate max and the number of data augmentation per image.
+
+
+```
+# How to use code
+from Data_Augmentation import *
+
+class_list is default as  ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp']
+directory = "./Dataset"
+angle is default as 45
+iter is default as 3
+random_rotation(class_list, directory, angle, iter)
+```
 
 Output:
 
@@ -120,21 +133,53 @@ Output:
 <p align="center">
   <em>Examples of data augmentation</em>
 </p>
+
 -----
 ## Training the model
 Once we have our final dataset, it is time to train the model. We will be using a pre-trained VGG16 architecture as it is a model that has consistently performed well.
 
 ### Function
-`preparing_dataset(filepath)`: Function that takes in the dataset filepath and creates the training and validation dataset
+`preparing_dataset(filepath, train_val_split, seed)`: Function that takes in the dataset filepath, the ratio split between test and val dataset, the seed for randomisation and creates the training and validation dataset. train_val_split is default at 0.2 and seed is default at 123.
 
 `visualise_dataset(train_ds)`: Function that takes in the training dataset and shows the first 9 images of the first batch, help visualises data
 
-`train_model(train_ds, val_ds, model, batch_size, epochs, filepath)`: Function that takes in the training and validation dataset, the model that will train on this data and the specifics of the model training. Default batch_size and epochs is 32 and 15 respectively. The model will be trained on the dataset and best model (based on lowest loss) will be saved to the filepath.
+`train_model(class_names, train_ds, val_ds, batch_size, epochs, modelpath)`: Function that takes in the class_names to create the model, training and validation dataset and the specifics of the model training. Default batch_size and epochs is 32 and 15 respectively. The model will be trained on the dataset and best model (based on lowest loss) will be saved to the filepath.
+
+```
+# How to use code
+from Training_model import *
+
+class_names is default as ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp']
+datasetfilepath = "./Dataset"
+modelpath = "./Models/best_model.h5"
+
+train_val_split is default as 0.2
+seed is default as 123
+batch_size is default as 32
+epoch is default as 15
+
+class_names, train_ds, val_ds = preparing_dataset(datasetfilepath, train_val_split, seed)
+visualise_dataset(train_ds)
+train_model(class_names, train_ds, val_ds, batch_size, epochs, modelpath)
+```
+
 -----
 ## Running the model and linking to Firebase
 
 ### Function
-`Hand_gesture_recognition()`: Function that will constantly check the webcam. If a fist is detected, update the Firebase data to 0. If a high five is detected, update the Firebase data to 1.
+`Hand_gesture_recognition(secretspath, url, class_names, modelpath):`: Function that takes in the file path to secrets.json file of firebase database, url of database, class names and the path to the best model. Function will constantly send live footage of the webcam to model. If a fist is detected, update the Firebase data to 0. If a high five is detected, update the Firebase data to 1.
+
+```
+#How to use code
+from Gesture_Recognition import *
+
+secretspath = "./Database/secrets.json"
+url = "https://xxx.firebaseio.com"
+class_names is default as ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp']
+modelpath = "./Models/best_model.h5"
+
+Hand_gesture_recognition(secretspath, url, class_names, modelpath)
+```
 
 Output:
 
