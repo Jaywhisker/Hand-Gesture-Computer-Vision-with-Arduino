@@ -2,8 +2,7 @@
 #This code file contains functions for
 
 Data Augmentation:
-random_rotation(image_list, angle, iter, path)
-
+random_rotation(class_list, directory, angle, iter):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 #import dependencies
