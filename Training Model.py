@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 #This code file contains functions for
 
+Defining the model:
+creating_model(class_names)
+
 Training Model:
 preparing_dataset(filepath, train_val_split, seed)
 visualise_dataset(train_ds)
@@ -17,7 +20,7 @@ from keras.callbacks import ModelCheckpoint
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras import layers, models
 from tensorflow.keras.models import Sequential
-from Model import model
+from Model import 
 
 #Function that splits the images into their training and validation dataset
 #Requires: filepath to dataset, train_val_split size <1, currently default to 0.2, seed for randomly creating train and val ds, currently default to 123
@@ -75,8 +78,39 @@ def visualise_dataset(train_ds):
       plt.axis("off")
 
       
+#Function to create model
+#Requires: class_names
+#Returns: model architecture
+def creating_model(class_names):
+  #loading VGG16 model
+  #not using any of imagenet weights due to a custom data, remove the top predictor layer
+  base_model = VGG16(weights= None, include_top=False, input_shape=(224,224,3)) 
+  base_model.trainable = True # trainable weights
 
-def train_model(train_ds, val_ds, model, batch_size=32, epochs=15, filepath):
+  #creating our own layers to add on to VGG16
+  flatten_layer = layers.Flatten() #flatten outputs from VGG16
+  dense_layer_1 = layers.Dense(50, activation='relu') #dense layer
+  dense_layer_2 = layers.Dense(20, activation='relu') #dense layer
+  prediction_layer = layers.Dense(len(class_names), activation='softmax') 
+  #prediction layer, the number of outputs is the number of classes we have
+  #this layer will determine the model prediction
+
+  #merging the layers together to create our Computer Vision model
+  model = models.Sequential([
+      base_model, #VGG16
+      flatten_layer,
+      dense_layer_1,
+      dense_layer_2,
+      prediction_layer
+  ])
+  model.summary()
+  return model
+
+
+def train_model(class_names, train_ds, val_ds, model, batch_size=32, epochs=15, filepath):
+  #creating model
+  model = creating_model(class_names)
+  
   #creating callback checkpoint to save the weights of the model with the least loss
   checkpoint = ModelCheckpoint("best_model.hdf5", monitor='loss', verbose=1, save_best_only=True, mode='auto', period=1)
   
