@@ -12,7 +12,7 @@ Note: The blog uses the code that accomodates for running on Google Colab. There
   <img src="https://user-images.githubusercontent.com/51687528/236611878-5cd06a73-8268-463c-8e0f-48cd8a831a2a.png" width = 70%>
 </div>
 
-This project is broken down into 3 main part: Data Collection, Training the model, Linking the Arduino to the Firebase
+This project is broken down into 4 main part: Data Collection, Data Augmentation, Training the model, Linking the Arduino to the Firebase
 
 ### Output: 
 <div float="left" align="center">
