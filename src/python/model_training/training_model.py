@@ -12,20 +12,28 @@ train_model(class_names, train_ds, val_ds, batch_size, epochs, modelpath)
 
 #Importing dependencies 
 import tensorflow as tf
-from tensorflow import keras
 import pathlib
-import glob
 import matplotlib.pyplot as plt
 from keras.callbacks import ModelCheckpoint
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras import layers, models
 from tensorflow.keras.models import Sequential
-from Model import 
 
-#Function that splits the images into their training and validation dataset
-#Requires: filepath to dataset, train_val_split size <1, currently default to 0.2, seed for randomly creating train and val ds, currently default to 123
-#Returns class_name, train_dataset, val_dataset
+
 def preparing_dataset(filepath, train_val_split = 0.2, seed = 123):
+  """
+  Function to generate dataset for training (training and validation dataset)
+
+  Args:
+      filepath (string): filepath to the parent directory that contains subfolders of images (subfolder name is class name)
+      train_val_split (float, optional): ratio for the train to validation dataset size split. Defaults to 0.2.
+      seed (int, optional): splitting dataset seed. Defaults to 123.
+
+  Returns:
+      class_names: list of class labels for the dataset
+      train_ds: training dataset
+      val_ds: validation dataset
+  """
 
   #Getting the path to the dataset
   data_dir = pathlib.Path(filepath)
@@ -41,7 +49,6 @@ def preparing_dataset(filepath, train_val_split = 0.2, seed = 123):
   img_width = 224
 
   #splitting the dataset into train and validation data set
-  #using a validation_split of 0.2 splits the data into 80% training and 20% validation
   train_ds = tf.keras.utils.image_dataset_from_directory(
     data_dir,
     validation_split=train_val_split,
@@ -65,11 +72,17 @@ def preparing_dataset(filepath, train_val_split = 0.2, seed = 123):
 
 
 
-#Function to visualise dataset
-#Requires: training dataset
-#Returns: Image of dataset 
 def visualise_dataset(train_ds):
+  """
+  Helper function for visualising dataset
+  Will show 9 images from the first batch of the train dataset
+
+  Args:
+      train_ds: training dataset
+  """
   plt.figure(figsize=(10, 10))
+  class_names = train_ds.class_names
+      
   for images, labels in train_ds.take(1): #take first batch
     for i in range(9): #first 9 images
       ax = plt.subplot(3, 3, i + 1)
@@ -78,10 +91,17 @@ def visualise_dataset(train_ds):
       plt.axis("off")
 
       
-#Function to create model
-#Requires: class_names
-#Returns: model architecture
-def creating_model(class_names):
+def creating_model(class_names:list):
+  """
+  Create VGG16 model
+
+  Args:
+      class_names (list): list of class labels of the dataset
+
+  Returns:
+      model: trainable model architecture of vgg16
+  """
+
   #loading VGG16 model
   #not using any of imagenet weights due to a custom data, remove the top predictor layer
   base_model = VGG16(weights= None, include_top=False, input_shape=(224,224,3)) 
@@ -93,7 +113,6 @@ def creating_model(class_names):
   dense_layer_2 = layers.Dense(20, activation='relu') #dense layer
   prediction_layer = layers.Dense(len(class_names), activation='softmax') 
   #prediction layer, the number of outputs is the number of classes we have
-  #this layer will determine the model prediction
 
   #merging the layers together to create our Computer Vision model
   model = models.Sequential([
@@ -106,9 +125,19 @@ def creating_model(class_names):
   model.summary()
   return model
 
-#Function to train the model
-#Requires class_names to create the model, followed by the dataset and the batch size and epochs. Lastly requires a filepath to save the best model.
-def train_model(class_names, train_ds, val_ds, batch_size=32, epochs=15, modelpath):
+
+def train_model(class_names:list, train_ds, val_ds, modelpath:str, batch_size:int=32, epochs:int=15):
+  """
+  Function to train the vgg16 model
+
+  Args:
+      class_names (list): list of class labels of the dataset
+      train_ds: training dataset
+      val_ds: validation dataset
+      modelpath (str): path where model will be saved
+      batch_size (int, optional): batch size of dataset used for training. Defaults to 32.
+      epochs (int, optional): number of epochs / iterations to run. Defaults to 15.
+  """
   #creating model
   model = creating_model(class_names)
   
@@ -116,7 +145,14 @@ def train_model(class_names, train_ds, val_ds, batch_size=32, epochs=15, modelpa
   checkpoint = ModelCheckpoint("best_model.hdf5", monitor='loss', verbose=1, save_best_only=True, mode='auto', period=1)
   
   #training the model
-  model.fit(train_ds,validation_data = val_ds, batch_size=batch_size, callbacks=[checkpoint], epochs=epochs)
+  model.fit(train_ds, validation_data = val_ds, batch_size=batch_size, callbacks=[checkpoint], epochs=epochs)
   
   #save the best model
   model.save(modelpath)
+
+
+if __name__ == "__main__":
+  filepath = '/Data/'
+  class_names, train_ds, val_ds = preparing_dataset(filepath)
+  train_model(class_names, train_ds, val_ds)
+

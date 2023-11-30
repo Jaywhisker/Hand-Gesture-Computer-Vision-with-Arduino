@@ -73,7 +73,7 @@ As we only want to recognise hand gestures, we do not want other dependencies su
 
 ```
 # How to use code
-from Creating_Dataset import *
+from src.python.dataset_generation.dataset_creation import collect_dataset
 
 directory = "./Dataset/01_Highfive"
 collect_dataset(directory)
@@ -108,18 +108,18 @@ This will be your dataset for training your model. It is advised to look through
 Data augmentation is important as it increases our model accuracy while also increasing our dataset size. I have chosen random rotation of -90° to 90° for our data augmentation as it covers the range where the hand direction could be in.
 
 ### Function
-`random_rotation(class_list, directory,angle, iter)`: Function that takes in the list of class names, the directory that holds the folder of datasets, the angle that the image can rotate max and the number of data augmentation per image.
+`random_rotation(directory, class_list, angle, iter)`: Function that takes in the list of class names, the directory that holds the folder of datasets, the angle that the image can rotate max and the number of data augmentation per image.
 
 
 ```
 # How to use code
-from Data_Augmentation import *
+from src.python.dataset_generation.data_augmentation import random_rotation
 
 class_list is default as  ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp']
 directory = "./Dataset"
 angle is default as 45
 iter is default as 3
-random_rotation(class_list, directory, angle, iter)
+random_rotation(directory, class_list, angle, iter)
 ```
 
 Output:
@@ -147,7 +147,7 @@ Once we have our final dataset, it is time to train the model. We will be using 
 
 ```
 # How to use code
-from Training_model import *
+from src.python.model_training.training_model import *
 
 class_names is default as ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp']
 datasetfilepath = "./Dataset"
@@ -167,18 +167,18 @@ train_model(class_names, train_ds, val_ds, batch_size, epochs, modelpath)
 ## Running the model and linking to Firebase
 
 ### Function
-`Hand_gesture_recognition(secretspath, url, class_names, modelpath):`: Function that takes in the file path to secrets.json file of firebase database, url of database, class names and the path to the best model. Function will constantly send live footage of the webcam to model. If a fist is detected, update the Firebase data to 0. If a high five is detected, update the Firebase data to 1.
+`recognise_hand_gesture(secretspath, url, modelpath, class_names):`: Function that takes in the file path to secrets.json file of firebase database, url of database, class names and the path to the best model. Function will constantly send live footage of the webcam to model. If a fist is detected, update the Firebase data to 0. If a high five is detected, update the Firebase data to 1.
 
 ```
 #How to use code
-from Gesture_Recognition import *
+from src.python.firebase_microservice.recognise_gesture import recognise_hand_gesture
 
 secretspath = "./Database/secrets.json"
 url = "https://xxx.firebaseio.com"
 class_names is default as ['01_Highfive', '02_Fist', '03_Peace', '04_Fingerguns', '05_ThumbsUp']
 modelpath = "./Models/best_model.h5"
 
-Hand_gesture_recognition(secretspath, url, class_names, modelpath)
+recognise_hand_gesture(secretspath, url, modelpath, class_names)
 ```
 
 Output:
