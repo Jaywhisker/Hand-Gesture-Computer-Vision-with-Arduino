@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  hand-gesture-recognition:
+    image: hand-gesture-recognition
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../src:/tf/src
+      - ../notebook:/tf/notebook
+      - ../test:/tf/test
+    env_file:
+      - .env
+    build:
+      context: ../
+      dockerfile: build/Dockerfile
+    ports:
+      - 8888:8888
