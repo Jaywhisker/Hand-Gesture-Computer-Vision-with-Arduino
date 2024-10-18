@@ -2,7 +2,7 @@
 
 This project contains the code to create a simple hand gesture computer vision model. The hand gestures then can be used to control an Arduino MKR Wifi through a Firebase's real time database.
 
-Link to in-depth step by step guide: https://www.notion.so/Smart-Home-With-Arduino-and-Computer-Vision-628f8458261f4b9cb6ba959f22b34212
+[Click here for an in-depth step by step guide](https://handsomely-fascinator-0c1.notion.site/Smart-Home-With-Arduino-and-Computer-Vision-7acdb1301838448199c6091758a24258)
 
 Note: The blog uses the code that accomodates for running on Google Colab. There will 2 version of code in this GitHub, one that corresponds to the Google Colab code (tweaked to allow access to webcam) as well as a version that allows you to run the code locally if you have a GPU.
 
